@@ -8,31 +8,35 @@ require_relative "post_helper"
 class Rosumi::Messenger
   include PostHelper  
     
-  attr_accessor :devices
-  
   def initialize(user, pass)
     @user = user
     @pass = pass
+    super()
   end
 
-  def send_message(id, subject, mesage, sound)
-    data = {'clientContext' => {'appName'       => 'FindMyiPhone',
-                                'appVersion'    => '1.4',
-                                'buildVersion'  => '145',
-                                'deviceUDID'    => '0000000000000000000000000000000000000000',
-                                'inactiveTime'  => 2147483647,
-                                'osVersion'     => '4.2.1',
-                                'personID'      => 0,
-                                'productType'   => 'iPad1,1'
-                                },
-                                "sound": true, 
-                                "subject": "Test Subject",
-                                "text": "Hello world!",
-                                "device": 1,
-                                "userText": true 
+  # Sends a message to the specified device.
+  #
+  # ==== Attributes
+  #
+  # * +id+ - id of the device (0,1,2,3 et cetera).
+  # * +subject+ - Subject of the message.
+  # * +message+ - The message to display on the device.
+  # * +sound+ - If true, plays a sound on the device.
+  def send_message(id, subject, message, sound)
+
+    update_devices
+    device_id = @devices[id]['id']
+
+    data = {'clientContext' => client_context(device_id),
+            'device' => device_id,
+            'sound' => sound,
+            'subject' => subject,
+            'text' => message,
+            'userText' => true
            };
     
-    json_devices = self.send(:post,"/fmipservice/device/#{@user}/initClient", data)
+    self.send(:post,"/fmipservice/device/#{@user}/sendMessage", data)
+
   end
 
 end

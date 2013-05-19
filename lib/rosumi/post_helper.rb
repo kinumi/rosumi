@@ -1,13 +1,26 @@
 module PostHelper
-  URL="fmipmobile.icloud.com"
+
+  URL ="fmipmobile.icloud.com"
   PORT=443
 
-  @devices = []
+  attr_accessor :http, :partition, :devices
 
-  @partition = nil
+  def initialize
+    @http = Net::HTTP.new(URL, PORT)   
+    @http.use_ssl = true
+    @partition = nil
+    @devices = []
+  end
 
-  @http = Net::HTTP.new(URL, PORT)
-  @http.use_ssl=true
+  # Updates the devices array with the latest information from icloud.
+  def update_devices
+    data = {'clientContext' => client_context(nil)};
+    
+    json_devices = self.send(:post,"/fmipservice/device/#{@user}/initClient", data)
+    json_devices['content'].each { |json_device| @devices << json_device }
+    
+    @devices
+  end
 
 private 
 
@@ -32,8 +45,8 @@ private
     }
 
     unless @partition
-      @partition = fetch_partition(path, JSON.generate(data), headers) 
-      @http = Net::HTTP.new(@partition, PORT)
+      @partition = self.send(:fetch_partition, path, JSON.generate(data), headers) 
+      @http = Net::HTTP.new(partition, PORT)
       @http.use_ssl=true
     end
 
@@ -54,7 +67,7 @@ private
     
     raise ArgumentError, 'HTTP redirect too deep' if limit == 0
 
-    response = @http.post(path, data, headers)
+    response = http.post(path, data, headers)
 
     case response
     when Net::HTTPSuccess     then response
@@ -74,8 +87,30 @@ private
   # * +headers+ - HTTP headers.
   def fetch_partition(path, data, headers)
 
-    response = @http.post(path, data, headers)
+    response = http.post(path, data, headers)
     response['X-Apple-MMe-Host']
 
   end
+
+  # Returns the 'clientContext' attribute for requests.
+  #
+  # ==== Attributes
+  #
+  # * +id+ - The device id.
+  def client_context(id)
+
+     {
+      'appName' => 'FindMyiPhone',
+      'appVersion' => '1.4',
+      'buildVersion' => '145',
+      'deviceUDID' => '0000000000000000000000000000000000000000',
+      'inactiveTime' => 5911,
+      'osVersion' => '4.2.1',
+      'productType' => 'iPad1,1',
+      'selectedDevice' => id,
+      'shouldLocate'=>false
+     }
+
+  end
+
 end

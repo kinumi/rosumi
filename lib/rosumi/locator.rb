@@ -3,36 +3,17 @@ require 'json'
 require 'net/http'
 require 'net/https'
 require 'base64'
+require 'pry'
 require_relative "post_helper"
 
 class Rosumi::Locator
   include PostHelper  
     
-  attr_accessor :devices
-  
   def initialize(user, pass)
     @user = user
     @pass = pass
-    
-    self.update_devices
-  end
-
-  # Updates the devices array with the latest information from icloud.
-  def update_devices
-    data = {'clientContext' => {'appName'       => 'FindMyiPhone',
-                                'appVersion'    => '1.4',
-                                'buildVersion'  => '145',
-                                'deviceUDID'    => '0000000000000000000000000000000000000000',
-                                'inactiveTime'  => 2147483647,
-                                'osVersion'     => '4.2.1',
-                                'personID'      => 0,
-                                'productType'   => 'iPad1,1'
-                                }};
-    
-    json_devices = self.send(:post,"/fmipservice/device/#{@user}/initClient", data)
-    json_devices['content'].each { |json_device| @devices << json_device }
-    
-    @devices
+    @devices = []
+    super()
   end
 
   # Find a device by it's number.

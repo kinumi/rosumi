@@ -15,4 +15,5 @@ RSpec.configure do |config|
   data = YAML.load_file(CREDENTIALS_FILE)
   @@username = data['email']
   @@password = data['password']
+  @@rosumi = Rosumi.new @@username, @@password
 end
