@@ -1,5 +1,5 @@
 # Rosumi
-This Gem allows you to locate and message iOS devices via Apple's 'Find my iPhone' web service. The code was originally ported from the [Sosumi](https://github.com/tylerhall/sosumi/) PHP project by [hpop](https://github.com/hpop/rosumi). In this fork I've reorganized the code, added integration tests, and converted it into a gem.
+This Gem allows you to locate and message iOS devices via Apple's 'Find my iPhone' web service. The code was originally ported from the [Sosumi](https://github.com/tylerhall/sosumi/) PHP project by [hpop](https://github.com/hpop/rosumi). In this fork I've reorganized the code, added messaging logic, and converted it into a gem. There's also a couple integration tests.
 ## Installation
 
 Add this line to your application's Gemfile:
