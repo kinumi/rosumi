@@ -4,6 +4,7 @@
 .config
 .yardoc
 *.swp
+*.swo
 *.orig
 Gemfile.lock
 InstalledFiles
