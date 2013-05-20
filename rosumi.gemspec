@@ -5,8 +5,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Kevin Eder"]
   spec.email         = ["kevin.eder@gmail.com"]
   spec.description   = %q{Provides an API for locating and messaging Apple devices.}
-  spec.summary       = ""
-  spec.homepage      = ""
+  spec.summary       = %q{Provides an API for locating and messaging Apple devices.}
+  spec.homepage      = "https://github.com/kevineder/rosumi"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
