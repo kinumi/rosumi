@@ -1,7 +1,5 @@
 # Rosumi
-
-TODO: Write a gem description
-
+This Gem allows you to locate and message iOS devices via Apple's 'Find my iPhone' web service. The code was originally ported from the [Sosumi](https://github.com/tylerhall/sosumi/) PHP project by [hpop](https://github.com/hpop/rosumi). In this fork I've reorganized the code, added integration tests, and converted it into a gem.
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -18,7 +16,38 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+###Initialize:
+```
+require 'rosumi'
+
+rosumi = Rosumi.new "you@example.com", "password"
+```
+
+###Get IDs of devices:
+```
+devices = rosumi.devices
+
+puts "Device 0 name is '#{devices[0][:name]}', type is '#{devices[0][:type]}'"
+```
+
+###Get location of device:
+```
+location = rosumi.locate_device(id)
+
+puts "---------- Device '#{id}' -------------"
+puts "Name: #{location[:name]}" unless location[:name].nil?
+puts "Coordinate: [#{location[:latitude]},#{location[:longitude]}]" unless location[:latitude].nil?
+puts "Accurracy: #{location[:accurracy]}" unless location[:accurracy].nil?
+puts "Timestamp: #{location[:timestamp]}" unless location[:timestamp].nil?
+puts "-----------------------------------"
+```
+
+###Send message to device, no sound:
+```
+rosumi.send_message(id, "A subject", "Hello, world!", false)
+```
+
+You can get a working example in the [rosumi-example](https://github.com/kevineder/rosumi-example) repo.
 
 ## Contributing
 
