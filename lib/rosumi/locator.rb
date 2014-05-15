@@ -30,7 +30,7 @@ class Rosumi::Locator
     validate_response(device_num)
     begin
       raise "Unable to find location within '#{max_wait}' seconds" if ((Time.now - start) > max_wait)
-      sleep(10)
+      sleep(30)
       
       refresh_client
       validate_response(device_num)
