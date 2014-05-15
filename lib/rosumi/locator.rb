@@ -52,9 +52,9 @@ class Rosumi::Locator
   
   def validate_response(device_num)
     # debug!
-    pp @devices[device_num]
-    puts "=" * 70
-    STDOUT.flush
+    # pp @devices[device_num]['location']['locationFinished']
+    # puts "=" * 70
+    # STDOUT.flush
     raise "Invalid device number!" if @devices[device_num].nil?
     raise "There is no location data for this device (#{@devices[device_num]['name']})" if @devices[device_num]['location'].nil?
   end
