@@ -13,12 +13,24 @@ module PostHelper
   end
 
   # Updates the devices array with the latest information from icloud.
-  def update_devices
+  # call initClient
+  def init_client
     data = {'clientContext' => client_context(nil)};
     
+    @devices = []
     json_devices = self.send(:post,"/fmipservice/device/#{@user}/initClient", data)
     json_devices['content'].each { |json_device| @devices << json_device }
+    @devices
+  end
+
+  # Updates the devices array with the latest information from icloud.
+  # call refreshClient
+  def refresh_client
+    data = {'clientContext' => client_context(nil)};
     
+    @devices = []
+    json_devices = self.send(:post,"/fmipservice/device/#{@user}/refreshClient", data)
+    json_devices['content'].each { |json_device| @devices << json_device }
     @devices
   end
 

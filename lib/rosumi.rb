@@ -49,5 +49,5 @@ class Rosumi
 
 end
 
-require "rosumi/locator"
-require "rosumi/messenger"
+require "#{File.dirname(__FILE__)}/rosumi/locator"
+require "#{File.dirname(__FILE__)}/rosumi/messenger"
