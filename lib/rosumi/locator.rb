@@ -42,7 +42,9 @@ class Rosumi::Locator
       :longitude => @devices[device_num]['location']['longitude'],
       :accuracy  => @devices[device_num]['location']['horizontalAccuracy'],
       :timestamp => @devices[device_num]['location']['timeStamp'],
-      :position_type  => @devices[device_num]['location']['positionType']
+      :position_type  => @devices[device_num]['location']['positionType'],
+      :battery_level => @devices[device_num]['batteryLevel'],
+      :battery_status => @devices[device_num]['batteryStatus'],
       };
 
     return loc;
