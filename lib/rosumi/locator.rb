@@ -28,6 +28,8 @@ class Rosumi::Locator
     
     init_client
     validate_response(device_num)
+    sleep(30)
+    
     begin
       raise "Unable to find location within '#{max_wait}' seconds" if ((Time.now - start) > max_wait)
       sleep(30)
@@ -52,9 +54,9 @@ class Rosumi::Locator
   
   def validate_response(device_num)
     # debug!
-    # pp @devices[device_num]['location']['locationFinished']
-    # puts "=" * 70
-    # STDOUT.flush
+    puts @devices[device_num]['location']['locationFinished']
+    puts "=" * 70
+    STDOUT.flush
     raise "Invalid device number!" if @devices[device_num].nil?
     raise "There is no location data for this device (#{@devices[device_num]['name']})" if @devices[device_num]['location'].nil?
   end
