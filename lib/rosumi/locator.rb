@@ -28,7 +28,7 @@ class Rosumi::Locator
     
     init_client
     validate_response(device_num)
-    sleep(30)
+    initial_timestamp = @devices[device_num]['location']['timeStamp']
     
     begin
       raise "Unable to find location within '#{max_wait}' seconds" if ((Time.now - start) > max_wait)
@@ -36,7 +36,8 @@ class Rosumi::Locator
       
       refresh_client
       validate_response(device_num)
-    end until @devices[device_num]['location']['locationFinished']
+      current_timestamp = @devices[device_num]['location']['timeStamp']
+    end while initial_timestamp == current_timestamp
     
     loc = {
       :name      => @devices[device_num]['name'],
@@ -53,10 +54,17 @@ class Rosumi::Locator
   end
   
   def validate_response(device_num)
-    # debug!
-    puts @devices[device_num]['location']['locationFinished']
-    puts "=" * 70
-    STDOUT.flush
+    _DEBUG = true
+    if _DEBUG
+      lat = @devices[device_num]['location']['latitude']
+      lng = @devices[device_num]['location']['longitude']
+      acc = @devices[device_num]['location']['horizontalAccuracy']
+      puts "TIMESTAMP: #{Time.at(@devices[device_num]['location']['timeStamp'].to_i / 1000)} "
+      puts "LOCATION : #{lat}, #{lng}, #{acc} "
+      puts "FINISHED : #{@devices[device_num]['location']['locationFinished']} "
+      puts "=" * 70
+      STDOUT.flush
+    end
     raise "Invalid device number!" if @devices[device_num].nil?
     raise "There is no location data for this device (#{@devices[device_num]['name']})" if @devices[device_num]['location'].nil?
   end
