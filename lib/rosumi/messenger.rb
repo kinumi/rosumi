@@ -24,7 +24,7 @@ class Rosumi::Messenger
   # * +sound+ - If true, plays a sound on the device.
   def send_message(id, subject, message, sound)
 
-    update_devices
+    init_client
     device_id = @devices[id]['id']
 
     data = {'clientContext' => client_context(device_id),
