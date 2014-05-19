@@ -30,14 +30,16 @@ class Rosumi::Locator
     validate_response(device_num)
     initial_timestamp = @devices[device_num]['location']['timeStamp']
     
-    begin
-      raise "Unable to find location within '#{max_wait}' seconds" if ((Time.now - start) > max_wait)
-      sleep(30)
-      
-      refresh_client
-      validate_response(device_num)
-      current_timestamp = @devices[device_num]['location']['timeStamp']
-    end while initial_timestamp == current_timestamp
+    if Time.now - Time.at(initial_timestamp) > 300
+      begin
+        raise "Unable to find location within '#{max_wait}' seconds" if ((Time.now - start) > max_wait)
+        sleep(30)
+        
+        refresh_client
+        validate_response(device_num)
+        current_timestamp = @devices[device_num]['location']['timeStamp']
+      end while initial_timestamp == current_timestamp
+    end
     
     loc = {
       :name      => @devices[device_num]['name'],
