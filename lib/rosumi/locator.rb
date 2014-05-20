@@ -30,7 +30,7 @@ class Rosumi::Locator
     validate_response(device_num)
     initial_timestamp = @devices[device_num]['location']['timeStamp']
     
-    if Time.now - Time.at(initial_timestamp) > 300
+    if Time.now - Time.at(initial_timestamp / 1000) > 300
       begin
         raise "Unable to find location within '#{max_wait}' seconds" if ((Time.now - start) > max_wait)
         sleep(60)
